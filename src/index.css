@@ -1,0 +1,133 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/manrope';
+@import 'tailwindcss';
+
+:root {
+  --background: #f7f8f3;
+  --foreground: #141a18;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --primary: #246b4a;
+  --primary-foreground: #ffffff;
+  --secondary: #ecf2ee;
+  --muted: #ecf2ee;
+  --muted-foreground: #424846;
+  --accent: #ff7138;
+  --accent-foreground: #141a18;
+  --border: #c2c8c4;
+  --input: #c2c8c4;
+  --ring: #ff7138;
+  --destructive: #ba1a1a;
+  --radius: 0.625rem;
+  --sky: #45b8e8;
+  --sunshine: #ffd166;
+  --forest: #246b4a;
+}
+
+.dark {
+  --background: #141a18;
+  --foreground: #ecf2ee;
+  --card: #202925;
+  --popover: #202925;
+  --primary: #8fd6ad;
+  --primary-foreground: #141a18;
+  --secondary: #2c322f;
+  --muted: #2c322f;
+  --muted-foreground: #c2c8c4;
+  --accent: #ff8c60;
+  --accent-foreground: #141a18;
+  --border: #424846;
+  --input: #424846;
+  --ring: #ff8c60;
+  --destructive: #ffb4ab;
+}
+
+html {
+  font-family: 'Inter Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: 'Manrope Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.topo-grid {
+  background-image:
+    linear-gradient(#246b4a12 1px, transparent 1px),
+    linear-gradient(90deg, #246b4a12 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dark .topo-grid {
+  background-image:
+    linear-gradient(#8fd6ad14 1px, transparent 1px),
+    linear-gradient(90deg, #8fd6ad14 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.topo-dots {
+  background-image: radial-gradient(#246b4a22 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.dark .topo-dots {
+  background-image: radial-gradient(#8fd6ad24 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+@keyframes michi-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.michi-rise {
+  animation: 0.52s cubic-bezier(0.2, 0, 0, 1) both michi-rise;
+}
+
+@keyframes michi-draw {
+  from {
+    stroke-dashoffset: 120;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.michi-path {
+  stroke-dasharray: 120;
+  animation: 1.3s cubic-bezier(0.2, 0, 0, 1) both michi-draw;
+}
+
+.michi-interactive {
+  transition:
+    transform 0.12s ease-out,
+    border-color 0.12s ease-out,
+    background-color 0.12s ease-out,
+    color 0.12s ease-out,
+    box-shadow 0.12s ease-out;
+}
+
+.michi-interactive:hover {
+  transform: translateY(-2px);
+}
