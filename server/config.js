@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,13 +10,47 @@ try {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function resolveWritableDir(preferredDir, fallbackDir) {
+  try {
+    fs.mkdirSync(preferredDir, { recursive: true });
+    fs.accessSync(preferredDir, fs.constants.W_OK);
+    return preferredDir;
+  } catch (err) {
+    console.warn(
+      `[config] Cannot write to "${preferredDir}" (${err.code || err.message}); falling back to "${fallbackDir}"`
+    );
+    fs.mkdirSync(fallbackDir, { recursive: true });
+    return fallbackDir;
+  }
+}
+
+function resolveWritableFilePath(preferredPath, fallbackPath) {
+  if (preferredPath === ':memory:') return preferredPath;
+  const writableDir = resolveWritableDir(
+    path.dirname(preferredPath),
+    path.dirname(fallbackPath)
+  );
+  return writableDir === path.dirname(preferredPath)
+    ? preferredPath
+    : fallbackPath;
+}
+
 export function getConfig() {
   const isProd = process.env.NODE_ENV === 'production';
+  const defaultDbPath = path.join(__dirname, 'michi.db');
+  const defaultUploadDir = path.join(__dirname, 'uploads');
+
   return {
     port: Number(process.env.PORT || 3001),
     isProd,
-    dbPath: process.env.DB_PATH || path.join(__dirname, 'michi.db'),
-    uploadDir: process.env.UPLOAD_DIR || path.join(__dirname, 'uploads'),
+    dbPath: resolveWritableFilePath(
+      process.env.DB_PATH || defaultDbPath,
+      defaultDbPath
+    ),
+    uploadDir: resolveWritableDir(
+      process.env.UPLOAD_DIR || defaultUploadDir,
+      defaultUploadDir
+    ),
     sessionSecret:
       process.env.SESSION_SECRET || 'michi-dev-session-secret-change-in-prod',
     sessionCookieName: 'michi_session',
