@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { RotateCcw, Send, Sparkles } from 'lucide-react';
+import { apiUrl } from '../lib/api';
 
 const PROMPTS = [
   'Suggest a 5-day slow travel itinerary from Kyoto to Takayama',
@@ -35,7 +36,7 @@ export default function ChatbotPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(apiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

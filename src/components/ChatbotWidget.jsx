@@ -8,6 +8,7 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import { apiUrl } from '../lib/api';
 
 const STARTER_PROMPTS = [
   'Plan a 4-day slow train trip in Shikoku',
@@ -49,7 +50,7 @@ export default function ChatbotWidget() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(apiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

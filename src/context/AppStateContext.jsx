@@ -4,6 +4,7 @@ import {
   JOURNEYS as INITIAL_JOURNEYS,
   PROFILE_USER as INITIAL_PROFILE,
 } from '../data/journeys';
+import { apiUrl } from '../lib/api';
 
 const AppStateContext = createContext(null);
 
@@ -59,7 +60,7 @@ export function AppStateProvider({ children }) {
   // Hydrate from SQLite backend when available
   useEffect(() => {
     let active = true;
-    fetch('/api/bootstrap')
+    fetch(apiUrl('/api/bootstrap'))
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!active || !data) return;
@@ -97,7 +98,7 @@ export function AppStateProvider({ children }) {
       showToast(exists ? 'Removed from saved paths' : 'Saved to your atlas');
       return next;
     });
-    fetch(`/api/journeys/${encodeURIComponent(id)}/bookmark`, {
+    fetch(apiUrl(`/api/journeys/${encodeURIComponent(id)}/bookmark`), {
       method: 'POST',
     }).catch(() => {});
   };
@@ -110,7 +111,7 @@ export function AppStateProvider({ children }) {
       localStorage.setItem('michi-likes', JSON.stringify(next));
       return next;
     });
-    fetch(`/api/journeys/${encodeURIComponent(id)}/like`, {
+    fetch(apiUrl(`/api/journeys/${encodeURIComponent(id)}/like`), {
       method: 'POST',
     }).catch(() => {});
   };
@@ -123,7 +124,7 @@ export function AppStateProvider({ children }) {
       showToast(exists ? `Unfollowed ${handle}` : `Following ${handle}`);
       return next;
     });
-    fetch('/api/follow', {
+    fetch(apiUrl('/api/follow'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ handle }),
@@ -137,7 +138,7 @@ export function AppStateProvider({ children }) {
       return next;
     });
     showToast('Journey published to MICHI!');
-    fetch('/api/journeys', {
+    fetch(apiUrl('/api/journeys'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newJourney),
@@ -157,7 +158,7 @@ export function AppStateProvider({ children }) {
       return next;
     });
     showToast('Profile updated');
-    fetch('/api/profile', {
+    fetch(apiUrl('/api/profile'), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -197,7 +198,7 @@ export function AppStateProvider({ children }) {
       return next;
     });
     showToast('Thought added');
-    fetch(`/api/journeys/${encodeURIComponent(journeyId)}/comments`, {
+    fetch(apiUrl(`/api/journeys/${encodeURIComponent(journeyId)}/comments`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

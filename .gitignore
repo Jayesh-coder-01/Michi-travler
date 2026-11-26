@@ -1,4 +1,10 @@
 node_modules/
 dist/
 .env
+.env.local
+.env.*.local
 server/michi.db
+server/*.db
+server/*.db-wal
+server/*.db-shm
+server/uploads/
